@@ -1,0 +1,23 @@
+{
+    "name": "orchestra-mcp/plugin-tools-docs",
+    "description": "tools-docs tools plugin for Orchestra MCP.",
+    "type": "tools",
+    "license": "MIT",
+    "homepage": "https://orchestra-mcp.dev",
+    "support": {
+        "issues": "https://github.com/orchestra-mcp/plugin-tools-docs/issues",
+        "source": "https://github.com/orchestra-mcp/plugin-tools-docs"
+    },
+    "require": {
+        "orchestra-mcp/gen-go": "^0.1.0",
+        "orchestra-mcp/sdk-go": "^0.1.0"
+    },
+    "bin": "tools-docs",
+    "extra": {
+        "plugin-id": "tools.tools-docs",
+        "provides": ["tools"],
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}
