@@ -1,5 +1,5 @@
 // Package internal contains the core registration logic for the tools.docs
-// plugin. The DocsPlugin struct wires all 10 tool handlers to the plugin
+// plugin. The DocsPlugin struct wires all 11 tool handlers to the plugin
 // builder with their schemas and descriptions.
 package internal
 
@@ -11,10 +11,11 @@ import (
 
 // DocsPlugin holds the shared dependencies for all tool handlers.
 type DocsPlugin struct {
-	Storage *storage.DataStorage
+	Storage   *storage.DataStorage
+	Workspace string // absolute path to the project workspace root
 }
 
-// RegisterTools registers all 10 documentation tools on the given plugin builder.
+// RegisterTools registers all 11 documentation tools on the given plugin builder.
 func (dp *DocsPlugin) RegisterTools(builder *plugin.PluginBuilder) {
 	s := dp.Storage
 
@@ -40,13 +41,16 @@ func (dp *DocsPlugin) RegisterTools(builder *plugin.PluginBuilder) {
 		"Search documentation pages by query across titles, categories, tags, and content",
 		tools.DocSearchSchema(), tools.DocSearch(s))
 
-	// --- Generation and indexing tools (2) ---
+	// --- Generation and indexing tools (3) ---
 	builder.RegisterTool("doc_generate",
-		"Generate a documentation page from a code description",
+		"Generate a structured documentation page from a description with standard sections (Overview, API Reference, Usage Examples, Configuration, Troubleshooting)",
 		tools.DocGenerateSchema(), tools.DocGenerate(s))
 	builder.RegisterTool("doc_index",
 		"Index all documentation pages for a project and return a summary table",
 		tools.DocIndexSchema(), tools.DocIndex(s))
+	builder.RegisterTool("doc_scan",
+		"Scan the workspace docs/ folder for markdown files and import them as MCP documentation pages",
+		tools.DocScanSchema(), tools.DocScan(s, dp.Workspace))
 
 	// --- Structure and export tools (2) ---
 	builder.RegisterTool("doc_tree",
